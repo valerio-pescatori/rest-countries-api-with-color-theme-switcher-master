@@ -1,8 +1,32 @@
 .nav {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1em 2em;
+  background-color: var(--primaryColor);
+
+  box-shadow: var(--boxShadow);
 }
 
 .nav__list {
-  margin-left: auto;
   list-style: none;
+  cursor: pointer;
+  border: 1px solid currentColor;
+  padding: 0.5em;
+  border-radius: 500px;
+}
+
+.nav__item {
+  display: inline-block;
+  margin-right: 0.5em;
+  font-weight: 600;
+}
+
+.nav__button {
+  background-color: transparent;
+  border: none;
+}
+
+.nav__icon {
+  transform: rotate(-20deg);
 }

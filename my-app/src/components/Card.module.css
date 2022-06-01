@@ -1,0 +1,38 @@
+.card__wrapper {
+  flex-basis: 25%;
+  /* min-width: 25%; */
+  border-radius: 5px;
+  padding: 1em;
+}
+
+.card {
+  border-radius: inherit;
+  height: 325px;
+  width: 250px;
+  background-color: var(--primaryColor);
+  box-shadow: var(--boxShadow);
+}
+
+.card__title {
+  margin-bottom: 0.75em;
+}
+
+.card__img {
+  height: 150px;
+  width: 100%;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.card__body {
+  padding: 1.5em;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+}
+
+.card__item {
+  display: inline-block;
+  font-weight: 600;
+  margin: 0.25em 0;
+}

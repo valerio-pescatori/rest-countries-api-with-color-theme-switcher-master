@@ -1,33 +1,45 @@
-.App {
-  text-align: center;
-}
-
-.logo {
-  animation: logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
-}
-
-.header {
-  background-color: #282c34;
-  min-height: 100vh;
+.container {
+  padding: 2em;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.link {
-  color: #b318f0;
+.headerInput {
+  background-color: var(--primaryColor);
+  padding: 1em 1.5em;
+  border-radius: 5px;
+  box-shadow: var(--boxShadow);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.headerInput:first-of-type {
+  margin-left: 1em;
+
+  flex-basis: 40%;
+}
+
+.headerInput:last-of-type {
+  margin-right: 1em;
+
+  flex-basis: 20%;
+}
+
+.headerInput > input {
+  margin-left: 1.5em;
+  background: none;
+  border: none;
+  height: 100%;
+  outline: none;
+  color: inherit;
+}
+.headerInput > input::placeholder {
+  color: var(--textColor);
+  opacity: 0.9;
+}
+
+.dNone {
+  display: none;
 }
