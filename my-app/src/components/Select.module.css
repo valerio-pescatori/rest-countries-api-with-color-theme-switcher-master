@@ -1,0 +1,28 @@
+.selectPlaceholder {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.select {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 100%;
+  margin-top: 0.5em;
+  background-color: var(--primaryColor);
+  padding: 1em 0;
+  border-radius: 5px;
+  box-shadow: var(--boxShadow);
+  display: flex;
+  flex-direction: column;
+}
+
+.option {
+  padding: 0.25em 1.5em;
+  cursor: pointer;
+}
+
+.option:hover {
+  background-color: var(--bgColor);
+}

@@ -1,6 +1,5 @@
 .card__wrapper {
   flex-basis: 25%;
-  /* min-width: 25%; */
   border-radius: 5px;
   padding: 1em;
 }

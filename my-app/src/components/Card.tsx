@@ -1,5 +1,6 @@
-import { onMount } from "solid-js";
+import { Component, onMount } from "solid-js";
 import styles from "./Card.module.css";
+import { RestCountry } from "../CountriesInterface";
 
 function format(number: number): string {
   let numStr: string[] = number.toString().split("");
@@ -7,7 +8,7 @@ function format(number: number): string {
   return numStr.join("");
 }
 
-export default function Card(props: any) {
+const Card: Component<{ data: RestCountry; show: boolean }> = (props) => {
   let country = props.data;
 
   return (
@@ -31,4 +32,6 @@ export default function Card(props: any) {
       </div>
     </>
   );
-}
+};
+
+export default Card;

@@ -13,31 +13,44 @@
   padding: 1em 1.5em;
   border-radius: 5px;
   box-shadow: var(--boxShadow);
+  flex-basis: 40%;
+  display: flex;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
 }
 
-.headerInput:first-of-type {
+label.headerInput {
   margin-left: 1em;
-
   flex-basis: 40%;
 }
 
-.headerInput:last-of-type {
+div.headerInput {
   margin-right: 1em;
-
-  flex-basis: 20%;
+  flex-basis: max(12em, 20%);
 }
 
-.headerInput > input {
-  margin-left: 1.5em;
+.headerInput > input,
+.headerInput > select {
+  flex-grow: 1;
   background: none;
   border: none;
   height: 100%;
   outline: none;
   color: inherit;
 }
+
+.headerInput > input {
+  margin-left: 1.5em;
+}
+
 .headerInput > input::placeholder {
   color: var(--textColor);
   opacity: 0.9;
+}
+
+.optionElement {
+  background-color: var(--primaryColor);
 }
 
 .dNone {
