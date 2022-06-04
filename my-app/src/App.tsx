@@ -24,7 +24,7 @@ const App = () => {
         observer.observe(target);
       }
     },
-    { threshold: 1, rootMargin: "-100px" }
+    { threshold: 1, rootMargin: "-40px" }
   );
 
   async function fetchData(): Promise<RestCountry[]> {
