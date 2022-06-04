@@ -1,11 +1,19 @@
 .container {
   padding: 2em;
+  padding-bottom: 7em;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
+}
+
+header.container {
+  justify-content: space-between;
+}
+
+div.container {
+  justify-content: center;
 }
 
 .headerInput {

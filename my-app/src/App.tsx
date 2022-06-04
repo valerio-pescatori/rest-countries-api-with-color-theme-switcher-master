@@ -1,21 +1,38 @@
-import { onMount, createSignal, For, createEffect } from "solid-js";
+import { onMount, createSignal, For, createEffect, createResource } from "solid-js";
 
 import Navbar from "./components/Navbar";
 import Card from "./components/Card";
 import Select from "./components/Select";
 import { theme, setTheme } from "./AppStore";
-import styles from "./App.module.css";
 import { RestCountry } from "./CountriesInterface";
+import styles from "./App.module.css";
 
 const App = () => {
-  const [data, setData] = createSignal<RestCountry[]>([]);
   const [textValue, setTextValue] = createSignal("");
   const [regionValue, setRegionValue] = createSignal("");
+  const [data] = createResource(fetchData);
+  const [cardsVisible, setCardsVisible] = createSignal(12);
+  const observer = new IntersectionObserver(
+    (entries, observer) => {
+      if (entries[0].isIntersecting) {
+        // unobserver last card
+        let target = document.querySelector("div." + styles.container + " > div:last-child")!;
+        observer.unobserve(target);
+        setCardsVisible((prev) => prev + 12);
+        // get last card and start observing
+        target = document.querySelector("div." + styles.container + " > div:last-child")!;
+        observer.observe(target);
+      }
+    },
+    { threshold: 1, rootMargin: "-100px" }
+  );
 
-  onMount(async () => {
-    const res = await fetch("https://restcountries.com/v3.1/alpha?codes=ger,usa,bra,isl,afg,ala,alb,alg");
-    setData(await res.json());
+  async function fetchData(): Promise<RestCountry[]> {
+    const res: Response = await fetch("https://restcountries.com/v3.1/all");
+    return res.json();
+  }
 
+  onMount(() => {
     //theme init
     if (localStorage.getItem("theme") == "theme-light") setTheme("theme-light");
     else setTheme("theme-dark");
@@ -29,6 +46,15 @@ const App = () => {
     if (regionValue() != "") regionMatch = country.region === regionValue();
     return textMatch && regionMatch;
   }
+
+  // start observing after fetch completed
+  createEffect(() => {
+    if (data()) {
+      //get last card
+      let target = document.querySelector("div." + styles.container + " > div:last-child")!;
+      observer.observe(target);
+    }
+  });
 
   return (
     <>
@@ -46,10 +72,22 @@ const App = () => {
           />
         </label>
         {/* Select input */}
-        <Select inputValue={regionValue} setInputValue={setRegionValue} data={new Set(data().map((el) => el.region))} />
+        <Select
+          inputValue={regionValue}
+          setInputValue={setRegionValue}
+          data={new Set(data()?.map((el) => el.region))}
+        />
       </header>
       <div class={styles.container}>
-        <For each={data()}>{(country, i) => <Card data={country} show={isVisible(country)} />}</For>
+        <For each={data()?.slice(0, cardsVisible())}>
+          {(country, i) =>
+            i() == cardsVisible() - 1 ? (
+              <Card data={country} show={isVisible(country)} />
+            ) : (
+              <Card data={country} show={isVisible(country)} />
+            )
+          }
+        </For>
       </div>
     </>
   );

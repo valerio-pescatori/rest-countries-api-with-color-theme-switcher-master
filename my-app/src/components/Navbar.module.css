@@ -12,14 +12,21 @@
   list-style: none;
   cursor: pointer;
   border: 1px solid currentColor;
-  padding: 0.5em;
+  padding: 0.5em 0;
+  width: 140px;
   border-radius: 500px;
+  display: flex;
+  justify-content: center;
 }
 
 .nav__item {
   display: inline-block;
   margin-right: 0.5em;
   font-weight: 600;
+}
+
+.nav__item:last-child {
+  margin-right: 0;
 }
 
 .nav__button {

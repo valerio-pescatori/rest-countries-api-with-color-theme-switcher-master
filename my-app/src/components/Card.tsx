@@ -1,4 +1,4 @@
-import { Component, onMount } from "solid-js";
+import { Component } from "solid-js";
 import styles from "./Card.module.css";
 import { RestCountry } from "../CountriesInterface";
 
@@ -25,7 +25,7 @@ const Card: Component<{ data: RestCountry; show: boolean }> = (props) => {
               <span class={styles.card__item}>Region:</span> {country.region}
             </div>
             <div>
-              <span class={styles.card__item}>Capital:</span> {country.capital[0]}
+              <span class={styles.card__item}>Capital:</span> {country.capital ? country.capital[0] : "N/D"}
             </div>
           </div>
         </div>

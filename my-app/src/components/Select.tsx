@@ -16,13 +16,13 @@ const Select: Component<{ inputValue: Accessor<string>; setInputValue: Setter<st
   function handleFocusOut(e: Event) {
     e.stopPropagation();
     requestAnimationFrame(() => {
-      if (!(e.target as Node).contains(document.activeElement)) setSelectVisible(false);
+      if (!(e.currentTarget as Node).contains(document.activeElement)) setSelectVisible(false);
     });
   }
 
   return (
     <div
-      onFocus={(e: Event) => {
+      onFocusIn={(e: Event) => {
         setSelectVisible(true);
       }}
       onFocusOut={handleFocusOut}
@@ -33,13 +33,19 @@ const Select: Component<{ inputValue: Accessor<string>; setInputValue: Setter<st
         <span>{props.inputValue() === "" ? "Filter by region" : props.inputValue()}</span>
         <i
           class={"fal fa-" + (props.inputValue() === "" ? "chevron-down" : "xmark")}
+          style="display: flex; align-items:center"
           // Reset solo se c'è la crocetta
-          onClick={(e) => {
+          onFocusIn={(e) => {
             if (props.inputValue() != "") {
-              (e.target as HTMLElement).parentElement?.parentElement?.blur();
+              // Reset value
               props.setInputValue("");
+              // Stop bubbling
+              e.stopPropagation();
+              // blur to avoid focus bug
+              (e.target as HTMLElement).blur();
             }
           }}
+          tabindex="0"
         ></i>
       </div>
       <Show when={selectVisible()}>
