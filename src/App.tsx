@@ -7,11 +7,16 @@ import { theme, setTheme } from "./AppStore";
 import { RestCountry } from "./CountriesInterface";
 import styles from "./App.module.css";
 
+const BASE_API_URL = "https://restcountries.com/v3.1/";
+const DEFAULT_API_URL = BASE_API_URL + "all";
+
 const App = () => {
   const [textValue, setTextValue] = createSignal("");
   const [regionValue, setRegionValue] = createSignal("");
-  const [data] = createResource(fetchData);
+  const [apiUrl, setApiUrl] = createSignal(DEFAULT_API_URL);
+  const [data, { mutate, refetch }] = createResource(apiUrl, fetchData);
   const [cardsVisible, setCardsVisible] = createSignal(12);
+
   const observer = new IntersectionObserver(
     (entries, observer) => {
       if (entries[0].isIntersecting) {
@@ -24,11 +29,12 @@ const App = () => {
         observer.observe(target);
       }
     },
-    { threshold: 1, rootMargin: "-40px" }
+    { threshold: 1, rootMargin: "-15px" }
   );
 
-  async function fetchData(): Promise<RestCountry[]> {
-    const res: Response = await fetch("https://restcountries.com/v3.1/all");
+  async function fetchData(url: string): Promise<RestCountry[]> {
+    const res: Response = await fetch(url);
+    console.log(data());
     return res.json();
   }
 
@@ -64,7 +70,12 @@ const App = () => {
         <label class={styles.headerInput}>
           <i class="fal fa-search fa-sm"></i>
           <input
-            onKeyUp={(e: Event) => setTextValue((e.target as HTMLInputElement).value)}
+            onKeyUp={(e: Event) => {
+              (e.target as HTMLInputElement).value === ""
+                ? setApiUrl(DEFAULT_API_URL)
+                : setApiUrl(BASE_API_URL + "name/" + (e.target as HTMLInputElement).value);
+              // setTextValue((e.target as HTMLInputElement).value);
+            }}
             type="text"
             name="country-name"
             id="text-input"
