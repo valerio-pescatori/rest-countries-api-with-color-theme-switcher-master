@@ -1,4 +1,4 @@
-import { onMount, createSignal, For, createEffect, createResource } from "solid-js";
+import { onMount, createSignal, For, Show, createEffect, createResource, createMemo } from "solid-js";
 
 import Navbar from "./components/Navbar";
 import Card from "./components/Card";
@@ -10,42 +10,44 @@ import styles from "./App.module.css";
 const BASE_API_URL = "https://restcountries.com/v3.1/";
 const DEFAULT_API_URL = BASE_API_URL + "all";
 
+async function fetchData(url: string): Promise<RestCountry[]> {
+  const res: Response = await fetch(url);
+  return res.json();
+}
+
 const App = () => {
   const [textValue, setTextValue] = createSignal("");
   const [regionValue, setRegionValue] = createSignal("");
   const [apiUrl, setApiUrl] = createSignal(DEFAULT_API_URL);
-  const [data, { mutate, refetch }] = createResource(apiUrl, fetchData);
+  const [data] = createResource(apiUrl, fetchData);
   const [cardsVisible, setCardsVisible] = createSignal(12);
+  const filteredData = createMemo(() => data()?.filter((e) => isVisible(e)));
 
   const observer = new IntersectionObserver(
     (entries, observer) => {
       if (entries[0].isIntersecting) {
-        // unobserver last card
-        let target = document.querySelector("div." + styles.container + " > div:last-child")!;
-        observer.unobserve(target);
-        setCardsVisible((prev) => prev + 12);
+        if (cardsVisible() === filteredData()!.length) {
+          observer.disconnect();
+          return;
+        }
+        setCardsVisible((prev) => (prev + 12 > filteredData()!.length ? filteredData()!.length : prev + 12));
         // get last card and start observing
-        target = document.querySelector("div." + styles.container + " > div:last-child")!;
-        observer.observe(target);
+        observeLastCard();
       }
     },
     { threshold: 1, rootMargin: "-15px" }
   );
 
-  async function fetchData(url: string): Promise<RestCountry[]> {
-    const res: Response = await fetch(url);
-    console.log(data());
-    return res.json();
+  function observeLastCard() {
+    // unobserve all
+    observer.disconnect();
+    // observe last
+    let target = document.querySelector("div." + styles.container + " > div:last-child")!;
+    // console.log(target);
+    if (target) observer.observe(target);
   }
 
-  onMount(() => {
-    //theme init
-    if (localStorage.getItem("theme") == "theme-light") setTheme("theme-light");
-    else setTheme("theme-dark");
-    localStorage.setItem("theme", theme());
-    document.documentElement.className = theme();
-  });
-
+  // check if card must be visible
   function isVisible(country: RestCountry): boolean {
     let textMatch = country.name.common.toLowerCase().includes(textValue().toLowerCase());
     let regionMatch = true;
@@ -53,12 +55,22 @@ const App = () => {
     return textMatch && regionMatch;
   }
 
+  //theme init
+  onMount(() => {
+    if (localStorage.getItem("theme") == "theme-light") setTheme("theme-light");
+    else setTheme("theme-dark");
+    localStorage.setItem("theme", theme());
+    document.documentElement.className = theme();
+  });
+
   // start observing after fetch completed
+  // reset last observed card on every input change
   createEffect(() => {
     if (data()) {
-      //get last card
-      let target = document.querySelector("div." + styles.container + " > div:last-child")!;
-      observer.observe(target);
+      textValue();
+      regionValue();
+      setCardsVisible(12);
+      observeLastCard();
     }
   });
 
@@ -71,10 +83,7 @@ const App = () => {
           <i class="fal fa-search fa-sm"></i>
           <input
             onKeyUp={(e: Event) => {
-              (e.target as HTMLInputElement).value === ""
-                ? setApiUrl(DEFAULT_API_URL)
-                : setApiUrl(BASE_API_URL + "name/" + (e.target as HTMLInputElement).value);
-              // setTextValue((e.target as HTMLInputElement).value);
+              setTextValue((e.target as HTMLInputElement).value);
             }}
             type="text"
             name="country-name"
@@ -90,14 +99,8 @@ const App = () => {
         />
       </header>
       <div class={styles.container}>
-        <For each={data()?.slice(0, cardsVisible())}>
-          {(country, i) =>
-            i() == cardsVisible() - 1 ? (
-              <Card data={country} show={isVisible(country)} />
-            ) : (
-              <Card data={country} show={isVisible(country)} />
-            )
-          }
+        <For each={filteredData()?.slice(0, cardsVisible())} fallback={<h3>No country matches the search filters.</h3>}>
+          {(country) => <Card data={country} />}
         </For>
       </div>
     </>

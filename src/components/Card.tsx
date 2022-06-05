@@ -8,12 +8,12 @@ function format(number: number): string {
   return numStr.join("");
 }
 
-const Card: Component<{ data: RestCountry; show: boolean }> = (props) => {
+const Card: Component<{ data: RestCountry }> = (props) => {
   let country = props.data;
 
   return (
     <>
-      <div class={styles.card__wrapper} style={props.show ? "" : "display: none"}>
+      <div class={styles.card__wrapper}>
         <div class={styles.card}>
           <img class={styles.card__img} src={country.flags.png} alt="Card image" />
           <div class={styles.card__body}>
