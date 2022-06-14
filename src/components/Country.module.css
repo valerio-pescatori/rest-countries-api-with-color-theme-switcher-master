@@ -17,6 +17,14 @@
   border-radius: 5px;
 }
 
+.button:hover {
+  transform: scale(1.1);
+}
+
+.button:active {
+  transform: scale(0.9);
+}
+
 .cardImg {
   flex-basis: 40%;
   max-width: 40%;
