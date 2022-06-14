@@ -1,14 +1,19 @@
+# SolidJS Rest Countries
+
+I wanted to try out SolidJS because it seemed very interesting from the first moment that I heard of it. I thought [this] challenge from [FrontendMentor.io](www.frontendmentor.io) could suit perfectly.<br>
+If you want to learn more about SolidJS here's the [Solid Website](https://solidjs.com).
+
+## Live version
+
+The app is currently deployed through Netlify and is available at [this link](https://stunning-basbousa-09cca0.netlify.app/).
+
 ## Usage
 
-Those templates dependencies are maintained via [pnpm](https://pnpm.io) via `pnpm up -Lri`.
-
-This is the reason you see a `pnpm-lock.yaml`. That being said, any package manager will work. This file can be safely be removed once you clone a template.
+If you want to run it locally you just need to:
 
 ```bash
 $ npm install # or pnpm install or yarn install
 ```
-
-### Learn more on the [Solid Website](https://solidjs.com) and come chat with us on our [Discord](https://discord.com/invite/solidjs)
 
 ## Available Scripts
 
@@ -19,7 +24,7 @@ In the project directory, you can run:
 Runs the app in the development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br>
+The page will reload if you make edits.
 
 ### `npm run build`
 
@@ -27,8 +32,3 @@ Builds the app for production to the `dist` folder.<br>
 It correctly bundles Solid in production mode and optimizes the build for the best performance.
 
 The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-## Deployment
-
-You can deploy the `dist` folder to any static host provider (netlify, surge, now, etc.)
