@@ -31,12 +31,14 @@ render(
   () => (
     <>
       <Navbar />
+
       <Router>
         <Routes>
           <Route path="/" element={<App />} />
           <Route path="/country/:id" element={<Country />} />
         </Routes>
       </Router>
+
       <Credits />
     </>
   ),
