@@ -1,6 +1,6 @@
 # SolidJS Rest Countries
 
-I wanted to try out SolidJS because it seemed very interesting from the first moment that I heard of it. I thought [this] challenge from [FrontendMentor.io](www.frontendmentor.io) could suit perfectly.<br>
+I wanted to try out SolidJS because it seemed very interesting from the first moment that I heard of it. I thought [this](https://www.frontendmentor.io/challenges/rest-countries-api-with-color-theme-switcher-5cacc469fec04111f7b848ca) challenge from [FrontendMentor.io](www.frontendmentor.io) could suit perfectly.<br>
 If you want to learn more about SolidJS here's the [Solid Website](https://solidjs.com).
 
 ## Live version
