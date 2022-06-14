@@ -1,25 +1,21 @@
-import { onMount, createSignal, For, Show, createEffect, createResource, createMemo } from "solid-js";
+import { onMount, createSignal, For, createEffect, createResource, createMemo, onCleanup } from "solid-js";
+import { Link } from "solid-app-router";
 
-import Navbar from "./components/Navbar";
 import Card from "./components/Card";
 import Select from "./components/Select";
-import { theme, setTheme } from "./AppStore";
 import { RestCountry } from "./CountriesInterface";
 import styles from "./App.module.css";
+import { DEFAULT_API_URL } from "./index";
 
-const BASE_API_URL = "https://restcountries.com/v3.1/";
-const DEFAULT_API_URL = BASE_API_URL + "all";
-
-async function fetchData(url: string): Promise<RestCountry[]> {
-  const res: Response = await fetch(url);
+async function fetchData(): Promise<RestCountry[]> {
+  const res: Response = await fetch(DEFAULT_API_URL);
   return res.json();
 }
 
 const App = () => {
   const [textValue, setTextValue] = createSignal("");
   const [regionValue, setRegionValue] = createSignal("");
-  const [apiUrl, setApiUrl] = createSignal(DEFAULT_API_URL);
-  const [data] = createResource(apiUrl, fetchData);
+  const [data] = createResource(fetchData);
   const [cardsVisible, setCardsVisible] = createSignal(12);
   const filteredData = createMemo(() => data()?.filter((e) => isVisible(e)));
 
@@ -31,21 +27,35 @@ const App = () => {
           return;
         }
         setCardsVisible((prev) => (prev + 12 > filteredData()!.length ? filteredData()!.length : prev + 12));
+
         // get last card and start observing
-        observeLastCard();
+        observeElement(cardsVisible());
       }
     },
-    { threshold: 1, rootMargin: "-15px" }
+    { threshold: 1 }
   );
 
-  function observeLastCard() {
+  onCleanup(() => observer.disconnect());
+
+  function observeElement(targetIndex: number) {
     // unobserve all
     observer.disconnect();
     // observe last
-    let target = document.querySelector("div." + styles.container + " > div:last-child")!;
-    // console.log(target);
+    let target = document.querySelector("div." + styles.container + " > a:nth-child(" + targetIndex + ")")!;
     if (target) observer.observe(target);
   }
+
+  // start observing after fetch completed
+  // reset last observed card on every input change
+  createEffect(() => {
+    if (data()) {
+      textValue();
+      regionValue();
+      setCardsVisible(12);
+      // POSSIBLE SOLUTION: PASS THE INDEX OF THE LAST CARD MANUALLY
+      observeElement(12);
+    }
+  });
 
   // check if card must be visible
   function isVisible(country: RestCountry): boolean {
@@ -55,28 +65,8 @@ const App = () => {
     return textMatch && regionMatch;
   }
 
-  //theme init
-  onMount(() => {
-    if (localStorage.getItem("theme") == "theme-light") setTheme("theme-light");
-    else setTheme("theme-dark");
-    localStorage.setItem("theme", theme());
-    document.documentElement.className = theme();
-  });
-
-  // start observing after fetch completed
-  // reset last observed card on every input change
-  createEffect(() => {
-    if (data()) {
-      textValue();
-      regionValue();
-      setCardsVisible(12);
-      observeLastCard();
-    }
-  });
-
   return (
     <>
-      <Navbar />
       <header class={styles.container}>
         {/* Text input */}
         <label class={styles.headerInput}>
@@ -100,7 +90,11 @@ const App = () => {
       </header>
       <div class={styles.container}>
         <For each={filteredData()?.slice(0, cardsVisible())} fallback={<h3>No country matches the search filters.</h3>}>
-          {(country) => <Card data={country} />}
+          {(country) => (
+            <Link href={"/country/" + country.cca2}>
+              <Card data={country} />
+            </Link>
+          )}
         </For>
       </div>
     </>

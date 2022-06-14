@@ -63,3 +63,15 @@ div.headerInput {
 .dNone {
   display: none;
 }
+
+@media only screen and (max-width: 550px) {
+  label.headerInput {
+    flex-basis: 100%;
+    margin: 1em 0;
+    margin-bottom: 2em;
+  }
+
+  div.headerInput {
+    font-size: 14px;
+  }
+}

@@ -1,7 +1,14 @@
 .card__wrapper {
-  flex-basis: 25%;
   border-radius: 5px;
   padding: 1em;
+}
+
+.card:hover {
+  transform: scale(1.1);
+}
+
+.card:active {
+  transform: scale(0.9);
 }
 
 .card {
