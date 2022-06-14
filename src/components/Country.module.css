@@ -1,3 +1,12 @@
+.container {
+  padding: 2em;
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 5em;
+}
+
 .button {
   background-color: var(--primaryColor);
   box-shadow: var(--boxShadow);
@@ -10,11 +19,16 @@
 
 .cardImg {
   flex-basis: 40%;
+  max-width: 40%;
+  object-fit: contain;
+  object-position: top;
 }
 
 .cardBody {
   flex-grow: 1;
-  margin-left: 4em;
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
 }
 
 .cardTitle {
@@ -22,13 +36,43 @@
 }
 
 .cardParagraphContainer {
-  display: inline-block;
+  flex-grow: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3em;
 }
 
-.cardParagraphContainer:last-child {
-  margin-left: 3em;
-}
-
-.cardParagraph {
+.cardParagraph > p {
   margin-top: 1em;
+}
+
+.cardBorders {
+  margin-top: 2em;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+}
+
+.cardBorders > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+}
+
+.cardBorder {
+  background-color: var(--primaryColor);
+  box-shadow: var(--boxShadow);
+  border-radius: 5px;
+  padding: 0.25em 1.5em;
+}
+
+@media only screen and (max-width: 550px) {
+  .container {
+    flex-wrap: wrap;
+    gap: 2em;
+  }
+
+  .cardImg {
+    max-width: 100%;
+  }
 }
