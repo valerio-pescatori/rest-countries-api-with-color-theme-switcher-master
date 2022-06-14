@@ -5,7 +5,7 @@ If you want to learn more about SolidJS here's the [Solid Website](https://solid
 
 ## Live version
 
-The app is currently deployed through Netlify and is available at [this link](https://stunning-basbousa-09cca0.netlify.app/).
+The app is currently deployed through Netlify and is available at [this link](https://solidjs-rest-countries.netlify.app).
 
 ## Usage
 
