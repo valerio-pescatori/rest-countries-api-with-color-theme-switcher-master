@@ -6,6 +6,7 @@ import App from "./App";
 import { Route, Router, Routes } from "solid-app-router";
 const Country = lazy(() => import("./components/Country"));
 import Navbar from "./components/Navbar";
+import Credits from "./components/Credits";
 import { lazy, onMount } from "solid-js";
 import { theme, setTheme } from "./AppStore";
 
@@ -36,6 +37,7 @@ render(
           <Route path="/country/:id" element={<Country />} />
         </Routes>
       </Router>
+      <Credits />
     </>
   ),
   document.getElementById("root") as HTMLElement
